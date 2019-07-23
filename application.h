@@ -3,6 +3,8 @@
 
 #include "video.h"
 #include "renderer.h"
+#include "sprite.h"
+#include "input.h"
 
 namespace Eternal {
 	class Application {
@@ -20,6 +22,7 @@ namespace Eternal {
 		protected:
 			Renderer *myRenderer;
 			VideoSystem *myVideoSystem;
+			InputHandle *myInputHandle;
 	};
 }
 

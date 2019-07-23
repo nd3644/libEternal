@@ -38,6 +38,9 @@ void Eternal::Renderer::SetColor(float r, float g, float b, float a) {
 }
 
 void Eternal::Renderer::DrawQuad(Eternal::Quad &quad) {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+
     vVertexBuffer[0].x = quad.v[0].x; vVertexBuffer[0].y = quad.v[0].y;
     vVertexBuffer[1].x = quad.v[1].x; vVertexBuffer[1].y = quad.v[1].y;
     vVertexBuffer[2].x = quad.v[2].x; vVertexBuffer[2].y = quad.v[2].y;
@@ -62,7 +65,9 @@ void Eternal::Renderer::DrawQuad(Eternal::Quad &quad) {
 }
 
 void Eternal::Renderer::DrawTriangle(Eternal::Triangle &triangle) {
-
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+    
     vVertexBuffer[0].x = triangle.v[0].x; vVertexBuffer[0].y = triangle.v[0].y;
     vVertexBuffer[1].x = triangle.v[1].x; vVertexBuffer[1].y = triangle.v[1].y;
     vVertexBuffer[2].x = triangle.v[2].x; vVertexBuffer[2].y = triangle.v[2].y;
@@ -82,6 +87,9 @@ void Eternal::Renderer::DrawTriangle(Eternal::Triangle &triangle) {
 }
 
 void Eternal::Renderer::DrawLine(float sx, float sy, float fx, float fy) {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+    
     vVertexBuffer[0].x = sx;    vVertexBuffer[0].y = sy;
     vVertexBuffer[1].x = fx;    vVertexBuffer[1].y = fy;
     for(int i = 0;i < 2;i++) {

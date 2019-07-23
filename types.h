@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <math.h>
+
 namespace Eternal {
 
     struct RGBA {
@@ -19,9 +21,34 @@ namespace Eternal {
         float a;
     };
 
+    struct Vec2i {
+        Vec2i() {
+            x = y = 0;
+        }
+        Vec2i(int ix, int iy) {
+            x = ix;
+            y = iy;
+        }
+        int x, y;
+    };
+
     struct Vec2 {
         Vec2() {
             x = y = 0;
+        }
+        Vec2(float fx, float fy) {
+            x = fx;
+            y = fy;
+        }
+
+        void Normalize() {
+            float f = Magnitude();
+            x /= f;
+            y /= f;
+        }
+
+        float Magnitude() {
+            return sqrtf((x * x) + (y * y));
         }
         float x, y;
     };
@@ -47,7 +74,96 @@ namespace Eternal {
                 v[2].x = x + w;  v[2].y = y + h;
                 v[3].x = x;      v[3].y = y + h;
             }
+
+            void FromRect() {
+
+            }
+
             Vec2 v[4];
+    };
+
+    struct Rect {
+        Rect() {
+            x = y = 0;
+            w = h = 32;
+        }
+        Rect(float fx, float fy, float fw, float fh) {
+            x = fx;
+            y = fy;
+            w = fw;
+            h = fh;
+        }
+        float x, y;
+        float w, h;
+
+        bool IsColliding(Rect &b) {
+            if (x > b.x + b.w
+                || x + w < b.x
+                || y > b.y + b.h
+                || y + h < b.y) {
+                return false;
+            }
+            return true;
+        }
+        
+        bool IsColliding(Rect &b, Vec2 &normal) {
+
+            if (x > b.x + b.w
+                || x + w < b.x
+                || y > b.y + b.h
+                || y + h < b.y) {
+                return false;
+            }
+
+            // temporary translate to center origin
+            x += w / 2;
+            y += h / 2;
+
+            b.x += b.w / 2;
+            b.y += b.h / 2;
+
+
+            normal.x = 0;
+            normal.y = 0;
+
+            Vec2 Distance;
+            Vec2 absDistance;
+
+            float XMagnitute;
+            float YMagnitute;
+
+            Distance.x = b.x - x;
+            Distance.y = b.y - y;
+
+            float XAdd = (b.w + w) / 2.0f;
+            float YAdd = (b.h + h) / 2.0f;
+
+
+            absDistance.x = (Distance.x < 0.0f) ? -Distance.x : Distance.x;
+            absDistance.y = (Distance.y < 0.0f) ? -Distance.y : Distance.y;
+
+            XMagnitute = XAdd - absDistance.x;
+            YMagnitute = YAdd - absDistance.y;
+
+
+            // check most significant overlap
+            if (XMagnitute < YMagnitute) {
+                normal.x = (Distance.x > 0) ? -XMagnitute : XMagnitute;
+            }
+            else {
+                normal.y = (Distance.y > 0) ? -YMagnitute : YMagnitute;
+            }
+
+
+            // put back origin
+            x -= w / 2;
+            y -= h / 2;
+            
+            b.x -= b.w / 2;
+            b.y -= b.h / 2;
+            return true;
+        }
+
     };
 
     struct Triangle {

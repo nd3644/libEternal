@@ -22,7 +22,7 @@ void Eternal::VideoSystem::Initialize(int x, int y, int w, int h) {
         std::cout << "Couldn't initialize GLEW" << std::endl;
     }
 
-    glClearColor(0.8f,0.8,0.8,0);
+    glClearColor(0, 0, 0, 0);
 
     myShader.Initialize();
     myShader.Bind();

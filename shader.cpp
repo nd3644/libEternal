@@ -61,13 +61,10 @@ void Eternal::Shader::Initialize() {
 
 	glShaderSource(myShaders[Type::SHADER_VERTEX], 1, p, lengths);
 	glCompileShader(myShaders[Type::SHADER_VERTEX]);
-    std::cout << p[0] << std::endl;
 
     GLchar buffer[256];
     GLsizei size;
 	glGetShaderInfoLog(myShaders[Type::SHADER_VERTEX], 256, &size, buffer);
-    std::cout << buffer << std::endl;
-
 
 	// Compile frag shader
 	const GLchar *ap[1];
@@ -75,14 +72,10 @@ void Eternal::Shader::Initialize() {
 
 	ap[0] = sFragment.c_str();
 	alengths[0] = sFragment.length();
-    std::cout << ap[0] << std::endl;
 
-
-std::cout << "FRAGMENT: " << std::endl;
 	glShaderSource(myShaders[Type::SHADER_FRAGMENT], 1, ap, alengths);
 	glCompileShader(myShaders[Type::SHADER_FRAGMENT]);
     glGetShaderInfoLog(myShaders[Type::SHADER_FRAGMENT], 256, &size, buffer);
-    std::cout << buffer << std::endl;
 
 	// attach shaders
 	glAttachShader(myProgram, myShaders[0]);
