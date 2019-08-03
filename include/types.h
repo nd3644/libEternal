@@ -63,28 +63,6 @@ namespace Eternal {
         float x, y, z;
     };
 
-    struct Quad {
-        public:
-            Quad() {
-                v[0].x = v[0].y = 0;
-                v[1].x = v[1].y = 0;
-                v[2].x = v[2].y = 0;
-                v[3].x = v[3].y = 0;
-            }
-            Quad(float x, float y, float w, float h) {
-                v[0].x = x;      v[0].y = y;
-                v[1].x = x + w;  v[1].y = y;
-                v[2].x = x + w;  v[2].y = y + h;
-                v[3].x = x;      v[3].y = y + h;
-            }
-
-            void FromRect() {
-
-            }
-
-            Vec2 v[4];
-    };
-
     struct Rect {
         Rect() {
             x = y = 0;
@@ -166,7 +144,37 @@ namespace Eternal {
             b.y -= b.h / 2;
             return true;
         }
+    };
 
+
+    struct Quad {
+        public:
+            Quad() {
+                v[0].x = v[0].y = 0;
+                v[1].x = v[1].y = 0;
+                v[2].x = v[2].y = 0;
+                v[3].x = v[3].y = 0;
+            }
+            Quad(float x, float y, float w, float h) {
+                v[0].x = x;      v[0].y = y;
+                v[1].x = x + w;  v[1].y = y;
+                v[2].x = x + w;  v[2].y = y + h;
+                v[3].x = x;      v[3].y = y + h;
+            }
+
+            void FromRect(Eternal::Rect &r) {
+                v[0].x = -r.w;   v[0].y = -r.h;
+                v[1].x = r.w;    v[1].y = -r.h;
+                v[2].x = r.w;    v[2].y = r.h;
+                v[3].x = -r.w;   v[3].y = r.h;
+
+                v[0].x += r.x;  v[0].y += r.y;
+                v[1].x += r.x;  v[1].y += r.y;
+                v[2].x += r.x;  v[2].y += r.y;
+                v[3].x += r.x;  v[3].y += r.y;
+            }
+
+            Vec2 v[4];
     };
 
     struct Triangle {

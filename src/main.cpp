@@ -9,18 +9,26 @@ class Game : public Eternal::Application {
             ~Game() {}
 
             void OnInitialize() override {
-
+                pos.w = 64;
+                pos.h = 32;
             }
 
             void OnUpdate() override {
+                pos.x += 1.0f;
 
             }
 
             void OnDraw() override {
+                Eternal::Quad q;
+                q.FromRect(pos);
 
+                myRenderer->SetColor(1,0,0,1);
+                myRenderer->DrawQuad(q);
             }
         private:
+            Eternal::Rect pos;
 };
+
 
 int main(int argc, char *args[]) {
 
