@@ -1,6 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <stdio.h>
 #include <math.h>
 
 namespace Eternal {
@@ -43,8 +44,10 @@ namespace Eternal {
 
         void Normalize() {
             float f = Magnitude();
-            x /= f;
-            y /= f;
+            if(f != 0) {
+             x /= f;
+                y /= f;
+            }
         }
 
         float Magnitude() {

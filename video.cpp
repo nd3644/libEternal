@@ -43,6 +43,9 @@ bool Eternal::VideoSystem::Clear() {
     if(mySDLEvent.type == SDL_QUIT) {
         return false;
     }
+    else if(mySDLEvent.type = SDL_WINDOWEVENT && mySDLEvent.window.event == SDL_WINDOWEVENT_CLOSE) {
+        return false;
+    }
 
     glClear(GL_COLOR_BUFFER_BIT);
 
