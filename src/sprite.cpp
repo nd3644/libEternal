@@ -66,13 +66,19 @@ void Eternal::Sprite::Draw(Rect &pos, Rect &clip) {
     vVertexBuffer[4].x = pos.x + pos.w;     vVertexBuffer[4].y = pos.y + pos.h;
     vVertexBuffer[5].x = pos.x;             vVertexBuffer[5].y = pos.y + pos.h;
 
-    vTexCoords[0].x = 0;        vTexCoords[0].y = 0;
-    vTexCoords[1].x = 1;        vTexCoords[1].y = 0;
-    vTexCoords[2].x = 0;        vTexCoords[2].y = 1;
 
-    vTexCoords[3].x = 1;        vTexCoords[3].y = 0;
-    vTexCoords[4].x = 1;        vTexCoords[4].y = 1;
-    vTexCoords[5].x = 0;        vTexCoords[5].y = 1;
+    const float cx = clip.x / w;
+    const float cy = clip.y / h;
+    const float cw = (clip.x / w) + clip.w / w;
+    const float ch = (clip.y / h) + clip.h / h;
+
+    vTexCoords[0].x = cx;        vTexCoords[0].y = cy;
+    vTexCoords[1].x = cw;        vTexCoords[1].y = cy;
+    vTexCoords[2].x = cx;        vTexCoords[2].y = ch;
+
+    vTexCoords[3].x = cw;        vTexCoords[3].y = cy;
+    vTexCoords[4].x = cw;        vTexCoords[4].y = ch;
+    vTexCoords[5].x = cx;        vTexCoords[5].y = ch;
     for(int i = 0;i < 6;i++) {
         vVertexBuffer[i].x /= 320;
         vVertexBuffer[i].y /= 240;

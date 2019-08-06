@@ -11,6 +11,7 @@ class Game : public Eternal::Application {
             void OnInitialize() override {
                 pos.w = 64;
                 pos.h = 32;
+                mySprite.Load("brick.bmp");
             }
 
             void OnUpdate() override {
@@ -24,9 +25,27 @@ class Game : public Eternal::Application {
 
                 myRenderer->SetColor(1,0,0,1);
                 myRenderer->DrawQuad(q);
+
+
+                Eternal::Rect p, c;
+                p.x = p.y = 100;
+                p.w = p.h = c.w = c.h = 16;
+
+                for(int x = 0;x < 64;x += 16) {
+                    for(int y = 0;y < 64;y += 16) {
+                        c.x = x;
+                        c.y = y ;
+                        p.x = 100 + (x * 1.2);
+                        p.y = 100 + (y * 1.2);
+
+
+                        mySprite.Draw(p, c);
+                    }
+                }
             }
         private:
             Eternal::Rect pos;
+            Eternal::Sprite mySprite;
 };
 
 
