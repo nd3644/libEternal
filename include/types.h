@@ -163,15 +163,10 @@ namespace Eternal {
             }
 
             void FromRect(Eternal::Rect &r) {
-                v[0].x = -r.w;   v[0].y = -r.h;
-                v[1].x = r.w;    v[1].y = -r.h;
-                v[2].x = r.w;    v[2].y = r.h;
-                v[3].x = -r.w;   v[3].y = r.h;
-
-                v[0].x += r.x;  v[0].y += r.y;
-                v[1].x += r.x;  v[1].y += r.y;
-                v[2].x += r.x;  v[2].y += r.y;
-                v[3].x += r.x;  v[3].y += r.y;
+                v[0].x = r.x;  v[0].y = r.y;
+                v[1].x = r.x + r.w;  v[1].y = r.y;
+                v[2].x = r.x + r.w;  v[2].y = r.y + r.h;
+                v[3].x = r.x;  v[3].y = r.y + r.h;
             }
 
             Vec2 v[4];

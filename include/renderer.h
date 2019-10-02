@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 
 namespace Eternal {
+    extern int WIN_W, WIN_H;
     class Renderer {
         public:
             Renderer();
@@ -16,6 +17,7 @@ namespace Eternal {
             void DrawQuad(Quad &quad);
             void DrawTriangle(Triangle &triangle);
             void DrawLine(float sx, float sy, float fx, float fy);
+			void PlotPoint(float x, float y);
         private:
             GLuint vertArrObj;
             GLuint arrayBuffers[3];

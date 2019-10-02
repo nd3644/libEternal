@@ -2,10 +2,10 @@ CC = g++
 AR = ar
 LIB = libEternal.a
 ARFLAGS = -crv
-INCLUDE = -I /usr/include/SDL2/ -I include
+INCLUDE = -I include
 FLAGS = -Wfatal-errors -std=c++11 $(INCLUDE)
-LDFLAGS = -lSDL2 -lSDL2_image -lGL -lGLEW
-TARGET = out
+LDFLAGS = -lSDL2 -lSDL2_image -lSDL2_mixer -lGL -lGLEW
+TARGET = a.out
 
 SRC = $(wildcard src/*.cpp)
 

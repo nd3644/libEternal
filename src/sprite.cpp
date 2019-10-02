@@ -1,4 +1,5 @@
 #include "sprite.h"
+#include "renderer.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
@@ -80,8 +81,8 @@ void Eternal::Sprite::Draw(Rect &pos, Rect &clip) {
     vTexCoords[4].x = cw;        vTexCoords[4].y = ch;
     vTexCoords[5].x = cx;        vTexCoords[5].y = ch;
     for(int i = 0;i < 6;i++) {
-        vVertexBuffer[i].x /= 320;
-        vVertexBuffer[i].y /= 240;
+        vVertexBuffer[i].x /= (WIN_W / 2);
+        vVertexBuffer[i].y /= (WIN_H / 2);
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[0]);

@@ -1,5 +1,7 @@
 #include "video.h"
+#include "renderer.h"
 #include <GL/glew.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
 
 Eternal::VideoSystem::VideoSystem() {
@@ -24,12 +26,18 @@ void Eternal::VideoSystem::Initialize(int x, int y, int w, int h) {
 
     glClearColor(0, 0, 0, 0);
 
+    Mix_Init(MIX_INIT_MP3);
+    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,  MIX_DEFAULT_FORMAT, 2, 1024);
+
     myShader.Initialize();
     myShader.Bind();
     glViewport(x,y,w,h);
 
     // TODO: Init shaders
 
+
+    WIN_W = w;
+    WIN_H = h;
 
 //    glEnable(GL_LINE_SMOOTH);
     
@@ -40,10 +48,10 @@ void Eternal::VideoSystem::Initialize(int x, int y, int w, int h) {
 bool Eternal::VideoSystem::Clear() {
     SDL_PollEvent(&mySDLEvent);
 
-    if(mySDLEvent.type == SDL_QUIT) {
-        return false;
-    }
-    else if(mySDLEvent.type = SDL_WINDOWEVENT && mySDLEvent.window.event == SDL_WINDOWEVENT_CLOSE) {
+    if((mySDLEvent.type == SDL_QUIT) || (mySDLEvent.type = SDL_WINDOWEVENT && mySDLEvent.window.event == SDL_WINDOWEVENT_CLOSE)) {
+        Mix_CloseAudio();
+        Mix_Quit();
+        SDL_Quit();
         return false;
     }
 

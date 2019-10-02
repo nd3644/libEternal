@@ -35,12 +35,32 @@ class Game : public Eternal::Application {
                     for(int y = 0;y < 64;y += 16) {
                         c.x = x;
                         c.y = y ;
-                        p.x = 100 + (x * 1.2);
-                        p.y = 100 + (y * 1.2);
+                        p.x = 100 + (x);
+                        p.y = 100 + (y);
 
 
                         mySprite.Draw(p, c);
                     }
+                }
+
+                p.w = 1;
+                p.h = 64;
+                p.x = 200;
+                p.y = 100;
+                c.w = 1;
+                c.h = 64;
+                c.x = 0;
+                c.y = 0;
+
+                for(int x = 0;x < 64;x++) {
+                    c.x++;
+                    p.x++;
+                    mySprite.Draw(p, c);
+                }
+
+                for(int x = 0;x < 128;x++) {
+                    myRenderer->SetColor((float)x / 128.0f, 1, 1, 1);
+                    myRenderer->PlotPoint(x,128);
                 }
             }
         private:

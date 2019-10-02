@@ -1,6 +1,9 @@
 #include "renderer.h"
 #include <stdio.h>
 
+int Eternal::WIN_W = 640;
+int Eternal::WIN_H = 480;
+
 Eternal::Renderer::Renderer() {
     bInitialized = false;
 }
@@ -50,8 +53,8 @@ void Eternal::Renderer::DrawQuad(Eternal::Quad &quad) {
     vVertexBuffer[5].x = quad.v[3].x; vVertexBuffer[5].y = quad.v[3].y;
 
     for(int i = 0;i < 6;i++) {
-        vVertexBuffer[i].x /= 320;
-        vVertexBuffer[i].y /= 240;
+        vVertexBuffer[i].x /= (WIN_W /2);
+        vVertexBuffer[i].y /= (WIN_H /2);
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[0]);
@@ -73,8 +76,8 @@ void Eternal::Renderer::DrawTriangle(Eternal::Triangle &triangle) {
     vVertexBuffer[2].x = triangle.v[2].x; vVertexBuffer[2].y = triangle.v[2].y;
 
     for(int i = 0;i < 3;i++) {
-        vVertexBuffer[i].x /= 320;
-        vVertexBuffer[i].y /= 240;
+        vVertexBuffer[i].x /= (WIN_W /2);
+        vVertexBuffer[i].y /= (WIN_H /2);
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[0]);
@@ -93,8 +96,8 @@ void Eternal::Renderer::DrawLine(float sx, float sy, float fx, float fy) {
     vVertexBuffer[0].x = sx;    vVertexBuffer[0].y = sy;
     vVertexBuffer[1].x = fx;    vVertexBuffer[1].y = fy;
     for(int i = 0;i < 2;i++) {
-        vVertexBuffer[i].x /= 320;
-        vVertexBuffer[i].y /= 240;
+        vVertexBuffer[i].x /= (WIN_W /2);
+        vVertexBuffer[i].y /= (WIN_H /2);
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[0]);
@@ -105,4 +108,22 @@ void Eternal::Renderer::DrawLine(float sx, float sy, float fx, float fy) {
 
 	glBindVertexArray(vertArrObj);
 	glDrawArrays(GL_LINES, 0, 2);
+}
+
+void Eternal::Renderer::PlotPoint(float x, float y) {
+	glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+    
+    vVertexBuffer[0].x = x;    vVertexBuffer[0].y = y;
+    vVertexBuffer[0].x /= (WIN_W /2);
+    vVertexBuffer[0].y /= (WIN_H /2);
+
+    glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[0]);
+	glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(float), &vVertexBuffer[0], GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[2]);
+	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), &ColorBuffer, GL_DYNAMIC_DRAW);
+
+	glBindVertexArray(vertArrObj);
+	glDrawArrays(GL_POINTS, 0, 1);
 }
