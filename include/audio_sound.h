@@ -1,14 +1,14 @@
-#ifndef AUDIO_TRACK_H
-#define AUDIO_TRACK_H
+#ifndef AUDIO_SOUND_H
+#define AUDIO_SOUND_H
 
-#include <SDL2/SDL_mixer.h>
 #include <string>
+#include <SDL2/SDL_mixer.h>
 
 namespace Eternal {
-    class AudioTrack {
+    class Sound {
         public:
-            AudioTrack();
-            ~AudioTrack();
+            Sound();
+            ~Sound();
 
             void Load(std::string sfilename);
             void Play(int count);
@@ -19,8 +19,7 @@ namespace Eternal {
             void Cleanup();
 
         private:
-            Mix_Music *myMusic;
-
+            Mix_Chunk *myChunk;
     };
 }
 

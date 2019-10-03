@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "application.h"
+#include "audio_track.h"
 
 class Game : public Eternal::Application {
         public:
@@ -12,6 +13,9 @@ class Game : public Eternal::Application {
                 pos.w = 64;
                 pos.h = 32;
                 mySprite.Load("brick.bmp");
+                
+                myTrack.Load("01.mp3");
+                myTrack.Play(1);
             }
 
             void OnUpdate() override {
@@ -66,6 +70,7 @@ class Game : public Eternal::Application {
         private:
             Eternal::Rect pos;
             Eternal::Sprite mySprite;
+            Eternal::AudioTrack myTrack;
 };
 
 
