@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 #include "shader.h"
+#include "framebuffer.h"
+#include "sprite.h"
 
 namespace Eternal {
 	class VideoSystem {
@@ -20,6 +22,12 @@ namespace Eternal {
 			SDL_GLContext myGLContext;
 			SDL_Event mySDLEvent;
 			Shader myShader;
+
+			FrameBuffer myFBO;
+
+			Sprite mySprite;
+
+			int iCurrentWindowWidth, iCurrentWindowHeight;
 	};
 }
 

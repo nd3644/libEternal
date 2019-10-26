@@ -15,6 +15,7 @@ namespace Eternal {
             void Pause();
             void Stop();
 
+            void SetVolume(int i);
         private:
             void Cleanup();
 

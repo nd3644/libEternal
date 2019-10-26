@@ -6,6 +6,7 @@
 
 Eternal::Sprite::Sprite() {
     w = h = 0;
+    bFlipU = bFlipV = false;
 }
 
 Eternal::Sprite::~Sprite() {
@@ -18,13 +19,8 @@ void Eternal::Sprite::ClearData() {
 }
 
 void Eternal::Sprite::Load(std::string sfile) {
-    SDL_Surface *surf = IMG_Load(sfile.c_str());
-    if(surf == nullptr) {
-        std::cout << "Couldn't load " << sfile << std::endl;
-        return;
-    }
+    sName = sfile;
 
-    glEnable(GL_TEXTURE_2D);
     glGenTextures(1, &myTexID);
 
     glGenVertexArrays(1, &vertArrObj);
@@ -42,9 +38,20 @@ void Eternal::Sprite::Load(std::string sfile) {
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[2]);
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+    SDL_Surface *surf = IMG_Load(sfile.c_str());
+    if(surf == nullptr) {
+        std::cout << "Couldn't load " << sfile << std::endl;
+        return;
+    }
+
+    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, myTexID);
 
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+   
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w, surf->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surf->pixels);
@@ -56,9 +63,18 @@ void Eternal::Sprite::Load(std::string sfile) {
 
 }
 
+void Eternal::Sprite::ForceResize(int width, int height ){
+    w = width;
+    h = height;
+}
+
 void Eternal::Sprite::Draw(Rect &pos, Rect &clip) {
     glBindTexture(GL_TEXTURE_2D, myTexID);
 
+    Draw_NoBind(pos, clip);
+}
+
+void Eternal::Sprite::Draw_NoBind(Rect &pos, Rect &clip) {
     vVertexBuffer[0].x = pos.x;             vVertexBuffer[0].y = pos.y;
     vVertexBuffer[1].x = pos.x + pos.w;     vVertexBuffer[1].y = pos.y;
     vVertexBuffer[2].x = pos.x;             vVertexBuffer[2].y = pos.y + pos.h;
@@ -70,6 +86,9 @@ void Eternal::Sprite::Draw(Rect &pos, Rect &clip) {
 
     const float cx = clip.x / w;
     const float cy = clip.y / h;
+    if(w == 0 || h == 0) {
+        std::cout << "tf???" << sName << std::endl;
+    }
     const float cw = (clip.x / w) + clip.w / w;
     const float ch = (clip.y / h) + clip.h / h;
 
@@ -83,6 +102,13 @@ void Eternal::Sprite::Draw(Rect &pos, Rect &clip) {
     for(int i = 0;i < 6;i++) {
         vVertexBuffer[i].x /= (WIN_W / 2);
         vVertexBuffer[i].y /= (WIN_H / 2);
+
+        if(bFlipV) {
+            vTexCoords[i].y = 1.0f - vTexCoords[i].y;
+        }
+        if(bFlipU) {
+            vTexCoords[i].x = 1.0f - vTexCoords[i].x;
+        }
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[0]);

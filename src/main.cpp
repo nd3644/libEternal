@@ -3,6 +3,7 @@
 
 #include "application.h"
 #include "audio_track.h"
+#include "font.h"
 
 class Game : public Eternal::Application {
         public:
@@ -12,10 +13,7 @@ class Game : public Eternal::Application {
             void OnInitialize() override {
                 pos.w = 64;
                 pos.h = 32;
-                mySprite.Load("brick.bmp");
-                
-                myTrack.Load("01.mp3");
-                myTrack.Play(1);
+                myFont.Load("data/hello");
             }
 
             void OnUpdate() override {
@@ -42,8 +40,6 @@ class Game : public Eternal::Application {
                         p.x = 100 + (x);
                         p.y = 100 + (y);
 
-
-                        mySprite.Draw(p, c);
                     }
                 }
 
@@ -59,18 +55,33 @@ class Game : public Eternal::Application {
                 for(int x = 0;x < 64;x++) {
                     c.x++;
                     p.x++;
-                    mySprite.Draw(p, c);
                 }
 
                 for(int x = 0;x < 128;x++) {
                     myRenderer->SetColor((float)x / 128.0f, 1, 1, 1);
                     myRenderer->PlotPoint(x,128);
                 }
+                myFont.DrawString("abcdefghijklmnopqrstuvwxyz", 0, 0, 1);
+                myFont.DrawString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 8, 32, 1.0f);
+                myFont.DrawString("MARIO x00 TIME", 8, 64, 1.0f);
+                if(down) {
+                    fScale -= 0.001f;
+                    if(fScale <= 0) {
+                        down = false;
+                    }
+                }
+                else {
+                    fScale += 0.001f;
+                    if(fScale >= 2) {
+                        down = true;
+                    }
+                }
             }
         private:
             Eternal::Rect pos;
-            Eternal::Sprite mySprite;
-            Eternal::AudioTrack myTrack;
+            Eternal::Font myFont;
+            float fScale = 1;
+            bool down = true;
 };
 
 

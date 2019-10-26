@@ -29,3 +29,7 @@ void Eternal::Sound::Pause() {
 
 void Eternal::Sound::Stop() {
 }
+
+void Eternal::Sound::SetVolume(int i) {
+    Mix_VolumeChunk(myChunk, i);
+}
