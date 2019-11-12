@@ -13,6 +13,7 @@ namespace Eternal {
                 KEY_DOWN = SDL_SCANCODE_DOWN,
                 KEY_SPACE = SDL_SCANCODE_SPACE,
                 KEY_ESCAPE = SDL_SCANCODE_ESCAPE,
+                KEY_START = SDL_SCANCODE_RETURN
             };
 
             enum MouseButtons {

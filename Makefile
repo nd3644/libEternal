@@ -3,7 +3,7 @@ AR = ar
 LIB = libEternal.a
 ARFLAGS = -crv
 INCLUDE = -I include
-FLAGS = -Wfatal-errors -std=c++11 $(INCLUDE)
+FLAGS = -g -Wfatal-errors -std=c++11 $(INCLUDE)
 LDFLAGS = -lSDL2 -lSDL2_image -lSDL2_mixer -lGL -lGLEW
 TARGET = a.out
 

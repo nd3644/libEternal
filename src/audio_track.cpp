@@ -31,3 +31,7 @@ void Eternal::AudioTrack::Pause() {
 void Eternal::AudioTrack::Stop() {
     Mix_HaltMusic();
 }
+
+bool Eternal::AudioTrack::IsPlaying() const {
+    return Mix_PlayingMusic();
+}

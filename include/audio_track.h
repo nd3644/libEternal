@@ -15,6 +15,8 @@ namespace Eternal {
             void Pause();
             void Stop();
 
+            bool IsPlaying() const;
+
         private:
             void Cleanup();
 

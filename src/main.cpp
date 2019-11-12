@@ -82,6 +82,8 @@ class Game : public Eternal::Application {
             Eternal::Font myFont;
             float fScale = 1;
             bool down = true;
+
+            Eternal::AudioTrack t;
 };
 
 
