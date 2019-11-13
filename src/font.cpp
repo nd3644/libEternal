@@ -33,7 +33,10 @@ void Eternal::Font::Load(std::string sfilename) {
     myFontSheet.Load(filename_sheet);
 }
 
-void Eternal::Font::DrawString(std::string str, float fromX, float fromY, float fScale) {
+void Eternal::Font::DrawString(std::string str, float fromX, float fromY, float fScale, float red, float green, float blue, float alpha) {
+
+    myFontSheet.SetColor(red, green, blue, alpha);
+
     float fScaledSize = (float)iFontSize * fScale;
     Eternal::Rect r(fromX, fromY, fScaledSize, fScaledSize);
     Eternal::Rect c(0 ,0, iFontSize, iFontSize);

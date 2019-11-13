@@ -21,6 +21,8 @@ namespace Eternal {
             int GetHeight() const { return h; }
 
             void Flip(bool u, bool v) { bFlipU = u; bFlipV = v; }
+
+            void SetColor(float r, float g, float b, float a);
         private:
             bool bFlipU, bFlipV;
             void ClearData();

@@ -19,7 +19,8 @@ namespace Eternal {
             ~Font();
 
             void Load(std::string sfilename);
-            void DrawString(std::string str, float fromX, float fromY, float fScale);
+            void DrawString(std::string str, float fromX = 0.0f, float fromY = 0.0f, float fScale = 1.0f,
+                                            float red = 255.0f, float green = 255.0f, float blue = 255.0f, float alpha = 255.0f);
         private:
             int iFontSize;
             glyph *glyphList;

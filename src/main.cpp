@@ -58,12 +58,12 @@ class Game : public Eternal::Application {
                 }
 
                 for(int x = 0;x < 128;x++) {
-                    myRenderer->SetColor((float)x / 128.0f, 1, 1, 1);
+                    myRenderer->SetColor((float)x / 128.0f, 1.0f, 1.0f, 1.0f);
                     myRenderer->PlotPoint(x,128);
                 }
-                myFont.DrawString("abcdefghijklmnopqrstuvwxyz", 0, 0, 1);
-                myFont.DrawString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 8, 32, 1.0f);
-                myFont.DrawString("MARIO x00 TIME", 8, 64, 1.0f);
+                myFont.DrawString("abcdefghijklmnopqrstuvwxyz", 0.0f, 0.0f, 1.0f, 255.0f, 255.0f, 255.0f, 255.0f);
+                myFont.DrawString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 8.0f, 32.0f, 1.0f,0.0f, 0.0f, 255.0f, 150);
+                myFont.DrawString("MARIO x00 TIME", 8.0f, 64.0f, 1.0f,255.0f, 0.0f, 255.0f, 100);
                 if(down) {
                     fScale -= 0.001f;
                     if(fScale <= 0) {

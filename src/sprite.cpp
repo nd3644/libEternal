@@ -86,9 +86,7 @@ void Eternal::Sprite::Draw_NoBind(Rect &pos, Rect &clip) {
 
     const float cx = clip.x / w;
     const float cy = clip.y / h;
-    if(w == 0 || h == 0) {
-        std::cout << "tf???" << sName << std::endl;
-    }
+
     const float cw = (clip.x / w) + clip.w / w;
     const float ch = (clip.y / h) + clip.h / h;
 
@@ -119,8 +117,17 @@ void Eternal::Sprite::Draw_NoBind(Rect &pos, Rect &clip) {
 
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[2]);
-	glBufferData(GL_ARRAY_BUFFER, (6*4) * sizeof(float), &ColorBuffer, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (6*4) * sizeof(float), &ColorBuffer[0], GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(vertArrObj);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void Eternal::Sprite::SetColor(float r, float g, float b, float a) {
+    for(int i = 0;i < 6;i++) {
+        ColorBuffer[i].r = r / 255.0f;
+        ColorBuffer[i].g = g / 255.0f;
+        ColorBuffer[i].b = b / 255.0f;
+        ColorBuffer[i].a = a / 255.0f;
+    }
 }
