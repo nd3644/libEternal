@@ -18,7 +18,6 @@ class Game : public Eternal::Application {
 
             void OnUpdate() override {
                 pos.x += 1.0f;
-
             }
 
             void OnDraw() override {

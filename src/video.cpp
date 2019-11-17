@@ -100,3 +100,16 @@ void Eternal::VideoSystem::SwapBuffers() {
 
     SDL_GL_SwapWindow(myWindow);
 }
+
+bool Eternal::VideoSystem::IsFullscreen() const {
+    return (SDL_GetWindowFlags(myWindow) & SDL_WINDOW_FULLSCREEN);
+}
+
+void Eternal::VideoSystem::SetFullscreen(bool b) {
+    if(b && !IsFullscreen()) {
+        SDL_SetWindowFullscreen(myWindow, SDL_TRUE);
+    }
+    else if(!b && IsFullscreen()) {
+        SDL_SetWindowFullscreen(myWindow, SDL_FALSE);
+    }
+}

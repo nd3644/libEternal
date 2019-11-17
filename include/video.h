@@ -16,6 +16,10 @@ namespace Eternal {
 
 			bool Clear();
 			void SwapBuffers();
+
+
+			bool IsFullscreen() const;
+			void SetFullscreen(bool b);
 		private:
 			SDL_Renderer *myRenderer;
 			SDL_Window *myWindow;
