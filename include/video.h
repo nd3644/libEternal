@@ -17,9 +17,14 @@ namespace Eternal {
 			bool Clear();
 			void SwapBuffers();
 
-
 			bool IsFullscreen() const;
 			void SetFullscreen(bool b);
+
+			void SetVSync(bool b);
+			bool GetVSync() const;
+
+			void SetMaxFPS(int i);
+			int GetMaxFPS() const;
 		private:
 			SDL_Renderer *myRenderer;
 			SDL_Window *myWindow;
@@ -30,6 +35,11 @@ namespace Eternal {
 			FrameBuffer myFBO;
 
 			Sprite mySprite;
+
+			int iFPSTimer;
+			int iAverageFPS;
+			int iElapsedFrames;
+			int iMaxFPS;
 
 			int iCurrentWindowWidth, iCurrentWindowHeight;
 	};

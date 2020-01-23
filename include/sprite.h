@@ -12,6 +12,8 @@ namespace Eternal {
             ~Sprite();
 
             void Load(std::string sfilename);
+            void FromData(uint8_t *pixels, int width, int height, int bpp);
+            
             void Draw(Rect &pos, Rect &clip);
 
             void Draw_NoBind(Rect &pos, Rect &clip);

@@ -3,17 +3,26 @@
 
 #include "application.h"
 #include "audio_track.h"
+
 #include "font.h"
+
+#include <ebmp.h>
 
 class Game : public Eternal::Application {
         public:
             Game() {}
             ~Game() {}
 
+            Eternal::Sprite mySprite;
+            Eternal::Bmp myBmp;
+
             void OnInitialize() override {
-                pos.w = 64;
-                pos.h = 32;
+                pos.w = 128;
+                pos.h = 128;
                 myFont.Load("data/hello");
+                myBmp.Load("data/kawaii_alpha.bmp");
+                mySprite.FromData(myBmp.GetPixels(), myBmp.GetWidth(), myBmp.GetHeight(), myBmp.GetBPP());
+                std::cout << "bmp err: " << myBmp.GetError() << std::endl;
             }
 
             void OnUpdate() override {
@@ -21,60 +30,8 @@ class Game : public Eternal::Application {
             }
 
             void OnDraw() override {
-                Eternal::Quad q;
-                q.FromRect(pos);
-
-                myRenderer->SetColor(1,0,0,1);
-                myRenderer->DrawQuad(q);
-
-
-                Eternal::Rect p, c;
-                p.x = p.y = 100;
-                p.w = p.h = c.w = c.h = 16;
-
-                for(int x = 0;x < 64;x += 16) {
-                    for(int y = 0;y < 64;y += 16) {
-                        c.x = x;
-                        c.y = y ;
-                        p.x = 100 + (x);
-                        p.y = 100 + (y);
-
-                    }
-                }
-
-                p.w = 1;
-                p.h = 64;
-                p.x = 200;
-                p.y = 100;
-                c.w = 1;
-                c.h = 64;
-                c.x = 0;
-                c.y = 0;
-
-                for(int x = 0;x < 64;x++) {
-                    c.x++;
-                    p.x++;
-                }
-
-                for(int x = 0;x < 128;x++) {
-                    myRenderer->SetColor((float)x / 128.0f, 1.0f, 1.0f, 1.0f);
-                    myRenderer->PlotPoint(x,128);
-                }
-                myFont.DrawString("abcdefghijklmnopqrstuvwxyz", 0.0f, 0.0f, 1.0f, 255.0f, 255.0f, 255.0f, 255.0f);
-                myFont.DrawString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 8.0f, 32.0f, 1.0f,0.0f, 0.0f, 255.0f, 150);
-                myFont.DrawString("MARIO x00 TIME", 8.0f, 64.0f, 1.0f,255.0f, 0.0f, 255.0f, 100);
-                if(down) {
-                    fScale -= 0.001f;
-                    if(fScale <= 0) {
-                        down = false;
-                    }
-                }
-                else {
-                    fScale += 0.001f;
-                    if(fScale >= 2) {
-                        down = true;
-                    }
-                }
+                Eternal::Rect p(0,0,myBmp.GetWidth(),myBmp.GetHeight()), c(0,0,myBmp.GetWidth(),myBmp.GetHeight());
+                mySprite.Draw(p,c);
             }
         private:
             Eternal::Rect pos;

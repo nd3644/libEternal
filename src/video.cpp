@@ -5,6 +5,8 @@
 #include <iostream>
 
 Eternal::VideoSystem::VideoSystem() {
+    iElapsedFrames = iFPSTimer = iAverageFPS = 0;
+    iMaxFPS = 0;
 }
 
 Eternal::VideoSystem::~VideoSystem() {
@@ -13,7 +15,7 @@ Eternal::VideoSystem::~VideoSystem() {
 
 void Eternal::VideoSystem::Initialize(int x, int y, int w, int h) {
 	SDL_Init(SDL_INIT_EVERYTHING);
-    myWindow = SDL_CreateWindow("meow !  :3", x, y, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    myWindow = SDL_CreateWindow("meow !  :3", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     myGLContext = SDL_GL_CreateContext(myWindow);
 
@@ -43,6 +45,8 @@ void Eternal::VideoSystem::Initialize(int x, int y, int w, int h) {
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    iFPSTimer = SDL_GetTicks();
 }
 
 bool Eternal::VideoSystem::Clear() {
@@ -85,6 +89,14 @@ bool Eternal::VideoSystem::Clear() {
     return true;
 }
 
+void Eternal::VideoSystem::SetMaxFPS(int i) {
+    iMaxFPS = i;
+}
+
+int Eternal::VideoSystem::GetMaxFPS() const {
+    return iMaxFPS;
+}
+
 void Eternal::VideoSystem::SwapBuffers() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     myShader.Bind();
@@ -97,8 +109,24 @@ void Eternal::VideoSystem::SwapBuffers() {
     mySprite.Flip(false,true);
     mySprite.Draw_NoBind(r,c);
 
-
     SDL_GL_SwapWindow(myWindow);
+    iElapsedFrames++;
+
+    if(SDL_GetTicks() - iFPSTimer > 1000) {
+        SDL_SetWindowTitle(myWindow, std::to_string(iElapsedFrames).c_str());
+        iElapsedFrames = 0;
+        iFPSTimer = SDL_GetTicks();
+    }
+
+    static int fps = SDL_GetTicks();
+
+    if(iMaxFPS != 0) {
+        int time = SDL_GetTicks() - fps;
+        if(time < 1000 / iMaxFPS) {
+            SDL_Delay((1000 / iMaxFPS) - time);
+        }
+        fps = SDL_GetTicks();
+    }
 }
 
 bool Eternal::VideoSystem::IsFullscreen() const {
@@ -112,4 +140,13 @@ void Eternal::VideoSystem::SetFullscreen(bool b) {
     else if(!b && IsFullscreen()) {
         SDL_SetWindowFullscreen(myWindow, SDL_FALSE);
     }
+}
+
+void Eternal::VideoSystem::SetVSync(bool b) {
+    int i = (b == true) ? 1 : 0;
+    SDL_GL_SetSwapInterval(i);
+}
+
+bool Eternal::VideoSystem::GetVSync() const {
+    return static_cast<bool>(SDL_GL_GetSwapInterval());
 }

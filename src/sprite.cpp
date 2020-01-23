@@ -13,9 +13,55 @@ Eternal::Sprite::~Sprite() {
     if(glIsTexture(myTexID)) {
         glDeleteTextures(1, &myTexID);
     }
+
+    if(glIsVertexArray(vertArrObj)) {
+        glDeleteVertexArrays(1, &vertArrObj);
+    }
+
+    if(glIsBuffer(arrayBuffers[0])) {
+        glDeleteBuffers(3, arrayBuffers);
+    }
 }
 
 void Eternal::Sprite::ClearData() {
+}
+
+void Eternal::Sprite::FromData(uint8_t *pixels, int width, int height, int bpp) {
+    sName = "manual";
+
+    glGenTextures(1, &myTexID);
+
+    glGenVertexArrays(1, &vertArrObj);
+    glBindVertexArray(vertArrObj);
+    glGenBuffers(3, arrayBuffers);
+
+    glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[0]);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[1]);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[2]);
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, myTexID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+   
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    GLenum format = (bpp == 24) ? GL_RGB : GL_RGBA;
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+
+
+    w = width;
+    h = height;
 }
 
 void Eternal::Sprite::Load(std::string sfile) {
