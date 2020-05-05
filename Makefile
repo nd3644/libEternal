@@ -13,7 +13,7 @@ all:
 	$(CC) $(FLAGS) $(SRC) $(LDFLAGS) -o $(TARGET)
 
 lib:
-	$(CC) $(INCLUDE) -c $(filter-out main.cpp, $(SRC))
+	$(CC) $(INCLUDE) -c $(filter-out src/main.cpp, $(SRC))
 	$(AR) $(ARFLAGS) $(LIB) $(wildcard *.o)
 
 clean:
