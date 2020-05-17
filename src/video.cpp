@@ -66,19 +66,7 @@ bool Eternal::VideoSystem::Clear() {
 
                 int newWidth = mySDLEvent.window.data1;
                 int newHeight = mySDLEvent.window.data2;
-
-
-                newWidth = (newWidth / WIN_W) * WIN_W;
-                if(newWidth < WIN_W) {
-                    newWidth = WIN_W;
-                }
-                newHeight = (newHeight / WIN_H) * WIN_H;
-                if(newHeight < WIN_H) {
-                    newHeight = WIN_H;
-                }
-
-                SDL_SetWindowSize(myWindow, newWidth, newHeight);
-                
+                         
                 glViewport(0, 0, newWidth, newHeight);
                 iCurrentWindowWidth = newWidth;
                 iCurrentWindowHeight = newHeight;
@@ -149,4 +137,12 @@ void Eternal::VideoSystem::SetVSync(bool b) {
 
 bool Eternal::VideoSystem::GetVSync() const {
     return static_cast<bool>(SDL_GL_GetSwapInterval());
+}
+
+int Eternal::VideoSystem::GetCurrentWidth() const {
+    return iCurrentWindowWidth;
+}
+
+int Eternal::VideoSystem::GetCurrentHeight() const {
+    return iCurrentWindowHeight;
 }

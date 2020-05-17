@@ -25,6 +25,9 @@ namespace Eternal {
 
 			void SetMaxFPS(int i);
 			int GetMaxFPS() const;
+
+			int GetCurrentWidth() const;
+			int GetCurrentHeight() const;
 		private:
 			SDL_Renderer *myRenderer;
 			SDL_Window *myWindow;
