@@ -33,8 +33,16 @@ void Eternal::Font::Load(std::string sfilename) {
     myFontSheet.Load(filename_sheet);
 }
 
-void Eternal::Font::DrawString(std::string str, float fromX, float fromY, float fScale, float red, float green, float blue, float alpha) {
+int Eternal::Font::DrawStringCentered(std::string str, float fromX, float fromY, float fScale, float red, float green, float blue, float alpha) {
+    fromY -= ((float)iFontSize * fScale) / 2;
+    for(int i = 0;i < str.length();i++) {
+        fromX -= ((float)(glyphList[(int)str[i-1]].advance+1) * fScale) / 2;
+    }
+    return DrawString( str,  fromX,  fromY,  fScale,  red,  green,  blue,  alpha);
+}
 
+int Eternal::Font::DrawString(std::string str, float fromX, float fromY, float fScale, float red, float green, float blue, float alpha) {
+    int longestLine = 0;
     myFontSheet.SetColor(red, green, blue, alpha);
 
     float fScaledSize = (float)iFontSize * fScale;
@@ -47,6 +55,9 @@ void Eternal::Font::DrawString(std::string str, float fromX, float fromY, float 
 
         if(str[i] == '\n') {
             r.y += (float)iFontSize * fScale;
+            if((int)r.x - fromX > longestLine) {
+                longestLine = r.x - fromX;
+            }
             r.x = fromX;
             firstChar = true;
             continue;
@@ -59,4 +70,8 @@ void Eternal::Font::DrawString(std::string str, float fromX, float fromY, float 
         
         firstChar = false;
     }
+    if(longestLine == 0) {
+        longestLine = r.x - fromX;
+    }
+    return longestLine;
 }

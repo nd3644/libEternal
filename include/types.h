@@ -33,7 +33,9 @@ namespace Eternal {
         int x, y;
     };
 
-    struct Vec2 {
+    class Vec2 {
+        public:
+
         Vec2() {
             x = y = 0;
         }
@@ -53,6 +55,66 @@ namespace Eternal {
         float Magnitude() {
             return sqrtf((x * x) + (y * y));
         }
+
+        float Dot(Vec2 b) {
+            return (x * b.x) + (y * b.y);
+        }
+
+        void operator+=(Vec2 b) {
+            x += b.x;
+            y += b.y;
+        }
+
+        void operator-=(Vec2 b) {
+            x -= b.x;
+            y -= b.y;
+        }
+
+        void operator/=(Vec2 b) {
+            x /= b.x;
+            y /= b.y;
+        }
+
+        void operator*=(Vec2 b) {
+            x *= b.x;
+            y *= b.y;
+        }
+
+        Vec2 operator+(Vec2 b) {
+
+            Vec2 tmp;
+
+            tmp.x = x + b.x;
+            tmp.y = y + b.y;
+
+            return tmp;
+        }
+
+        Vec2 operator-(Vec2 b) {
+
+            Vec2 tmp;
+
+            tmp.x = x - b.x;
+            tmp.y = y - b.y;
+
+            return tmp;
+        }
+        
+        Vec2 operator*(float scalar) {
+            Vec2 tmp;
+            tmp.x = x * scalar;
+            tmp.y = y * scalar;
+
+            return tmp;
+        }
+
+        Vec2 operator/(float scalar) {
+            Vec2 tmp;
+            tmp.x = x / scalar;
+            tmp.y = y / scalar;
+            return tmp;
+        }
+
         float x, y;
     };
 

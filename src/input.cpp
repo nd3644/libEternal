@@ -8,6 +8,9 @@ Eternal::InputHandle::~InputHandle() {
 
 void Eternal::InputHandle::PollInputs() {
     const Uint8 *myKeys = SDL_GetKeyboardState(0);
+    prevMouseState = myMouse;
+    iFormerMouseX = iMouseX;
+    iFormerMouseY = iMouseY;
     myMouse = SDL_GetMouseState(&iMouseX, &iMouseY);
 
     for(int i = 0;i < 256;i++) {
@@ -27,6 +30,13 @@ bool Eternal::InputHandle::IsKeyTap(Key key) {
     return (bKeyStates[key] && !bPrevKeyStates[key]);
 }
 
+bool Eternal::InputHandle::IsMouseClick(MouseButtons b) {
+    if((myMouse & b) && !(prevMouseState & b)) {
+        return true;
+    }
+    return false;
+}
+
 bool Eternal::InputHandle::IsMouseDown(MouseButtons b) {
     if(myMouse & b) {
         return true;
@@ -40,4 +50,12 @@ int Eternal::InputHandle::GetMouseX() const {
 
 int Eternal::InputHandle::GetMouseY() const {
     return iMouseY;
+}
+
+int Eternal::InputHandle::GetFormerMouseX() const {
+    return iFormerMouseX;
+}
+
+int Eternal::InputHandle::GetFormerMouseY() const {
+    return iFormerMouseY;
 }

@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include "types.h"
+#include "font.h"
 #include <GL/glew.h>
 
 namespace Eternal {
@@ -18,7 +19,10 @@ namespace Eternal {
             void DrawTriangle(Triangle &triangle);
             void DrawLine(float sx, float sy, float fx, float fy);
 			void PlotPoint(float x, float y);
+
+            Eternal::Font &GetFont() ;
         private:
+            Eternal::Font myFont;
             GLuint vertArrObj;
             GLuint arrayBuffers[3];
 

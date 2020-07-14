@@ -29,6 +29,12 @@ void Eternal::Renderer::Initialize() {
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[2]);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+    myFont.Load("data/hello");
+}
+
+Eternal::Font &Eternal::Renderer::GetFont() {
+    return myFont;
 }
 
 void Eternal::Renderer::SetColor(float r, float g, float b, float a) {

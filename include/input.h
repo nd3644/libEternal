@@ -29,15 +29,19 @@ namespace Eternal {
             bool IsKeyDown(Key key);
             bool IsKeyTap(Key key);
 
+            bool IsMouseClick(MouseButtons b);
             bool IsMouseDown(MouseButtons b);
+
             int GetMouseX() const;
             int GetMouseY() const;
-
+            int GetFormerMouseX() const;
+            int GetFormerMouseY() const;
 
         private:
             Uint32 myMouse;
-            int iMouseX, iMouseY;
+            int iMouseX, iMouseY, iFormerMouseX, iFormerMouseY;
             bool bKeyStates[256];
+            Uint32 prevMouseState;
             bool bPrevKeyStates[256];
 
             bool bMouseButtonState[MBUTTON_COUNT];
