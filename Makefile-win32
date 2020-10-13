@@ -4,7 +4,7 @@ LIB := libEternal.a
 ARFLAGS := -crv
 INCLUDE := -I include
 FLAGS := -g -Wfatal-errors -fmax-errors=1 -std=c++11 $(INCLUDE)
-LDFLAGS := -lSDL2 -lSDL2_image -lSDL2_mixer -lGL -lGLEW
+LDFLAGS := -lSDL2 -lSDL2_image -lSDL2_mixer -lopengl32 -lglu32 -lglew32
 TARGET := a.out
 
 SRC = $(wildcard src/*.cpp)
