@@ -11,6 +11,146 @@
 
 #include <algorithm>
 
+struct vec2_t {
+	float x, y;
+};
+
+struct vec3_t {
+	float x, y, z;
+};
+
+vec3_t cube_verts[8];
+#define BUFFER_OFFSET(i) ((void*)(i))
+
+void CompileArr();
+std::vector<vec3_t>vertList;
+std::vector<vec2_t>uvList;
+
+
+void CompileArr() {
+
+	uvList.clear();
+	vertList.clear();
+
+	auto tex2 = [](float x, float y) {
+		vec2_t uv = { x, y };
+		uvList.push_back(uv);
+	};
+
+	auto vert3 = [](float x, float y, float z) {
+		vec3_t v = { x, y, z };
+		vertList.push_back(v);
+	};
+
+	tex2(0, 0); vert3(cube_verts[0].x, cube_verts[0].y, cube_verts[0].z);
+	tex2(1, 0); vert3(cube_verts[1].x, cube_verts[1].y, cube_verts[1].z);
+	tex2(0, 1); vert3(cube_verts[3].x, cube_verts[3].y, cube_verts[3].z);
+
+	tex2(0, 1); vert3(cube_verts[3].x, cube_verts[3].y, cube_verts[3].z);
+	tex2(1, 0); vert3(cube_verts[1].x, cube_verts[1].y, cube_verts[1].z);
+	tex2(1, 1); vert3(cube_verts[2].x, cube_verts[2].y, cube_verts[2].z);
+	
+	// back
+	tex2(0, 0); vert3(cube_verts[0+4].x, cube_verts[0+4].y, cube_verts[0+4].z);
+	tex2(1, 0); vert3(cube_verts[1+4].x, cube_verts[1+4].y, cube_verts[1+4].z);
+	tex2(0, 1); vert3(cube_verts[3+4].x, cube_verts[3+4].y, cube_verts[3+4].z);
+
+	tex2(0, 1); vert3(cube_verts[3+4].x, cube_verts[3+4].y, cube_verts[3+4].z);
+	tex2(1, 0); vert3(cube_verts[1+4].x, cube_verts[1+4].y, cube_verts[1+4].z);
+	tex2(1, 1); vert3(cube_verts[2+4].x, cube_verts[2+4].y, cube_verts[2+4].z);
+	
+	
+	// top
+	tex2(0, 0); vert3(cube_verts[0].x, cube_verts[0].y, cube_verts[0].z);
+	tex2(0, 1); vert3(cube_verts[4].x, cube_verts[4].y, cube_verts[4].z);
+	tex2(1, 1); vert3(cube_verts[5].x, cube_verts[5].y, cube_verts[5].z);
+
+	tex2(1, 1); vert3(cube_verts[5].x, cube_verts[5].y, cube_verts[4].z);
+	tex2(1, 0); vert3(cube_verts[1].x, cube_verts[1].y, cube_verts[1].z);
+	tex2(0, 0); vert3(cube_verts[0].x, cube_verts[0].y, cube_verts[0].z);
+	
+	
+	// bottom
+	tex2(0, 0); vert3(cube_verts[3].x, cube_verts[3].y, cube_verts[3].z);
+	tex2(0, 1); vert3(cube_verts[7].x, cube_verts[7].y, cube_verts[7].z);
+	tex2(1, 1); vert3(cube_verts[6].x, cube_verts[6].y, cube_verts[6].z);
+
+	tex2(1, 1); vert3(cube_verts[6].x, cube_verts[6].y, cube_verts[6].z);
+	tex2(1, 0); vert3(cube_verts[2].x, cube_verts[2].y, cube_verts[2].z);
+	tex2(0, 0); vert3(cube_verts[3].x, cube_verts[3].y, cube_verts[3].z);
+	
+	
+	// left
+	tex2(0, 0); vert3(cube_verts[0].x, cube_verts[0].y, cube_verts[0].z);
+	tex2(1, 0); vert3(cube_verts[4].x, cube_verts[4].y, cube_verts[4].z);
+	tex2(1, 1); vert3(cube_verts[7].x, cube_verts[7].y, cube_verts[7].z);
+	
+	tex2(0, 0); vert3(cube_verts[0].x, cube_verts[0].y, cube_verts[0].z);
+	tex2(0, 1); vert3(cube_verts[3].x, cube_verts[3].y, cube_verts[3].z);
+	tex2(1, 1); vert3(cube_verts[7].x, cube_verts[7].y, cube_verts[7].z);
+	
+	// right
+	tex2(0, 0); vert3(cube_verts[1].x, cube_verts[1].y, cube_verts[1].z);
+	tex2(1, 0); vert3(cube_verts[5].x, cube_verts[5].y, cube_verts[5].z);
+	tex2(1, 1); vert3(cube_verts[6].x, cube_verts[6].y, cube_verts[6].z);
+	
+	tex2(0, 0); vert3(cube_verts[1].x, cube_verts[1].y, cube_verts[1].z);
+	tex2(0, 1); vert3(cube_verts[2].x, cube_verts[2].y, cube_verts[2].z);
+	tex2(1, 1); vert3(cube_verts[6].x, cube_verts[6].y, cube_verts[6].z);
+}
+
+
+void DrawSprite() {
+	GLuint vao, myBuffers[2];
+	
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	glGenBuffers(2, &myBuffers[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, myBuffers[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec3_t) * 6, &vertList[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, myBuffers[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2_t) * 6, &uvList[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(vao);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+	glDeleteBuffers(2, &myBuffers[0]);
+	glDeleteVertexArrays(1, &vao);
+}
+
+GLuint LoadTexture(std::string sfilename) {
+	GLuint tex;
+
+	// load smile texture
+	SDL_Surface *surf = SDL_LoadBMP(sfilename.c_str());
+	if(surf == NULL) {
+		std::cout << "Couldn't load " + sfilename << std::endl;
+		std::cout << "\t *" << SDL_GetError() << std::endl;
+		exit(0);
+	}
+	
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, surf->w, surf->h, 0, GL_BGR, GL_UNSIGNED_BYTE, surf->pixels);
+	
+	SDL_FreeSurface(surf);
+
+	return tex;
+}
+
 const int WINDOW_W = 1024;
 const int WINDOW_H = 768;
 
@@ -246,6 +386,7 @@ class Game : public Eternal::Application {
                 pos.w = 128;
                 pos.h = 128;
                 myFont.Load("data/hello");
+                spr.Load("data/smile32.bmp");
             }
 
             void OnUpdate() override {
@@ -259,63 +400,47 @@ class Game : public Eternal::Application {
 
 
             void OnDraw() override {
-                //diag.OnDraw(myRenderer);
+                Eternal::Rect r(0,0,128,128);
+                Eternal::Rect c(0,0,128,128);
 
-                OBB Box1;
-                OBB Box2;
+                spr.Draw(r,c);
+                printf("???");
 
-                static float r = 0;
-                static float r2 = 0;
 
-                if(myInputHandle->IsKeyDown(Eternal::InputHandle::KEY_SPACE)) {
-                    r += 0.005f;
-                }
+                Eternal::Quad q;
+                r = { 200, 200, 64,64 };
+                q.FromRect(r);
+                myRenderer->SetColor(0,255,0,255);
+                myRenderer->DrawQuad(q);
 
-                static float x1 = 100, y1 = 100;
-                static float x2 = 220, y2 = 220;
-
-                if(myInputHandle->IsKeyDown(Eternal::InputHandle::KEY_RIGHT)) {
-                    x1++;
-                }
-                if(myInputHandle->IsKeyDown(Eternal::InputHandle::KEY_LEFT)) {
-                    x1--;
-                }
-
-                if(myInputHandle->IsKeyDown(Eternal::InputHandle::KEY_UP)) {
-                    y1--;
-                }
-                if(myInputHandle->IsKeyDown(Eternal::InputHandle::KEY_DOWN)) {
-                    y1++;
-                }
-
-                Box1.Set(x1, y1, 32, 64, r);
-                Box2.Set(x2, y2, 32, 64, r2);
-
-                myRenderer->SetColor(0,1,0,1);
-                Box1.Draw(myRenderer);
-                myRenderer->SetColor(0,0,1,1);
-                Box2.Draw(myRenderer);
-
-                if(Box1.Collides(Box2, myRenderer)) {
-                    printf("true\n");
-                }
-
-                myMenu.OnDraw(myRenderer);
+//                myMenu.OnDraw(myRenderer);
             }
         private:
+            GLuint id;
            // Diag diag;
            Menu myMenu;
             Eternal::Rect pos;
             float fScale = 1;
             bool down = true;
 
+            Eternal::Sprite spr;
+
             Eternal::AudioTrack t;
 };
 
-
+Game myGame;
 int main(int argc, char *args[]) {
+    cube_verts[0] = { -1, -1, -1 };
+	cube_verts[1] = { 1, -1, -1 };
+	cube_verts[2] = { 1, 1, -1 };
+	cube_verts[3] = { -1, 1, -1 };
+	
+	cube_verts[4] = { -1, -1, 1 };
+	cube_verts[5] = { 1, -1, 1 };
+	cube_verts[7] = { -1, 1, 1 };
+	cube_verts[6] = { 1, 1, 1 };
+	CompileArr();
 
-    Game myGame;
     myGame.Start(0, 0, WINDOW_W, WINDOW_H);
 
     return 0;

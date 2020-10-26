@@ -19,10 +19,6 @@ void Eternal::FrameBuffer::Initialize(int w, int h) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-
     // gen renderbuffer
     glGenRenderbuffers(1, &myRenderBufferID);
     glBindRenderbuffer(GL_RENDERBUFFER, myRenderBufferID);
@@ -39,6 +35,6 @@ void Eternal::FrameBuffer::Initialize(int w, int h) {
 }
 
 void Eternal::FrameBuffer::Bind() {
-    glBindFramebuffer(GL_FRAMEBUFFER, myFrameBufferID);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, myFrameBufferID);
     glViewport(0,0,iWidth,iHeight);
 }

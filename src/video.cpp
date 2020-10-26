@@ -4,6 +4,8 @@
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
 
+#include "dbglog.h"
+
 Eternal::VideoSystem::VideoSystem() {
     iElapsedFrames = iFPSTimer = iAverageFPS = 0;
     iMaxFPS = 0;
@@ -26,7 +28,7 @@ void Eternal::VideoSystem::Initialize(int x, int y, int w, int h) {
         std::cout << "Couldn't initialize GLEW" << std::endl;
     }
 
-    glClearColor(0, 0, 0, 0);
+    glClearColor(0, 0, 0, 1);
 
     Mix_Init(MIX_INIT_MP3);
     Mix_OpenAudio(44100,  MIX_DEFAULT_FORMAT, 2, 2048);
@@ -46,12 +48,16 @@ void Eternal::VideoSystem::Initialize(int x, int y, int w, int h) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    (*DbgLog::GetInstance()) << "Init happened\n;";
+
     iFPSTimer = SDL_GetTicks();
 }
 
 bool Eternal::VideoSystem::Clear() {
     myFBO.Bind();
+    
     myShader.Bind();
+    glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     while(SDL_PollEvent(&mySDLEvent) != 0) {
@@ -88,12 +94,13 @@ int Eternal::VideoSystem::GetMaxFPS() const {
 void Eternal::VideoSystem::SwapBuffers() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     myShader.Bind();
+    glClearColor(0,1,0,1);
     glClear(GL_COLOR_BUFFER_BIT);
     glViewport(0,0,iCurrentWindowWidth,iCurrentWindowHeight);
     glBindTexture(GL_TEXTURE_2D, myFBO.myTextureID);
-    mySprite.ForceResize(WIN_W, WIN_H);
-    Eternal::Rect r(0, 0, WIN_W, WIN_H);
-    Eternal::Rect c(0,0, WIN_W, WIN_H);
+    mySprite.ForceResize(iCurrentWindowWidth, iCurrentWindowHeight);
+    Eternal::Rect r(0, 0, iCurrentWindowWidth, iCurrentWindowHeight);
+    Eternal::Rect c(0,0, iCurrentWindowWidth, iCurrentWindowHeight);
     mySprite.Flip(false,true);
     mySprite.Draw_NoBind(r,c);
 

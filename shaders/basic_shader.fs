@@ -1,11 +1,9 @@
-#version 330 core
+#version 430 core
 
 in vec2 texCoord0;
 in vec4 color0;
 
 uniform sampler2D tex1;
-uniform sampler2D tex2;
-
 
 out vec4 diffuseColor;
 void main()

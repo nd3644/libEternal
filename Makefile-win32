@@ -3,7 +3,7 @@ AR := ar
 LIB := libEternal.a
 ARFLAGS := -crv
 INCLUDE := -I include
-FLAGS := -g -Wfatal-errors -fmax-errors=1 -std=c++11 $(INCLUDE)
+FLAGS := -g -Wfatal-errors -fmax-errors=1 -std=c++11 -DGLEW_STATIC $(INCLUDE)
 LDFLAGS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lopengl32 -lglu32 -lglew32
 TARGET := libEternal.exe
 
@@ -15,6 +15,9 @@ all:
 lib:
 	$(CC) $(INCLUDE) -c $(filter-out src/main.cpp, $(SRC))
 	$(AR) $(ARFLAGS) $(LIB) $(wildcard *.o)
+
+run:
+	libEternal.exe
 
 .PHONY:	clean
 clean:

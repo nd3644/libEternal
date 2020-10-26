@@ -7,6 +7,7 @@
 Eternal::Sprite::Sprite() {
     w = h = 0;
     bFlipU = bFlipV = false;
+    SetColor(255,255,255,255);
 }
 
 Eternal::Sprite::~Sprite() {
@@ -49,9 +50,6 @@ void Eternal::Sprite::FromData(uint8_t *pixels, int width, int height, int bpp) 
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, myTexID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
    
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -74,16 +72,16 @@ void Eternal::Sprite::Load(std::string sfile) {
     glGenBuffers(3, arrayBuffers);
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[0]);
-    glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[1]);
-    glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[2]);
-    glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(2);
 
     SDL_Surface *surf = IMG_Load(sfile.c_str());
     if(surf == nullptr) {
@@ -93,9 +91,6 @@ void Eternal::Sprite::Load(std::string sfile) {
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, myTexID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
    
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -105,7 +100,7 @@ void Eternal::Sprite::Load(std::string sfile) {
     w = surf->w;
     h = surf->h;
 
-    SDL_FreeSurface(surf);
+//    SDL_FreeSurface(surf);
 
 }
 
@@ -115,6 +110,7 @@ void Eternal::Sprite::ForceResize(int width, int height ){
 }
 
 void Eternal::Sprite::Draw(Rect &pos, Rect &clip) {
+
     glBindTexture(GL_TEXTURE_2D, myTexID);
 
     Draw_NoBind(pos, clip);
