@@ -3,6 +3,7 @@
 
 #include "application.h"
 #include "audio_track.h"
+#include "mesh.h"
 #include "font.h"
 
 
@@ -151,8 +152,8 @@ GLuint LoadTexture(std::string sfilename) {
 	return tex;
 }
 
-const int WINDOW_W = 1024;
-const int WINDOW_H = 768;
+const int WINDOW_W = 256;
+const int WINDOW_H = 256;
 
 Eternal::Font myFont;
 
@@ -160,7 +161,7 @@ class Diag : public Eternal::PanelUI {
     public:
         Diag() : PanelUI(WINDOW_W - 300,64, 256, 256) {
             myBox.SetGeometry(4, 4 + 32, 256 - 8, 12);
-/*            for(int i = 0;i < 3;i++) {
+            for(int i = 0;i < 3;i++) {
                 mySliders[i].SetGeometry(4 + 38, 12 + (i * 32), 256 - 12 - 38, 16);
                 sliderLabels[i].Move(4, 16 + (i * 32));
                 AddWidget(&sliderLabels[i]);
@@ -179,7 +180,7 @@ class Diag : public Eternal::PanelUI {
 
             AddWidget((Eternal::Widget*)&myButton);
             myButton.Move(GetGeometry().w - myButton.GetGeometry().w - 4, GetGeometry().h - myButton.GetGeometry().h - 4);
-            myButton.SetText("close");*/
+            myButton.SetText("close");
         }
         ~Diag() {} 
 
@@ -376,6 +377,8 @@ class Game : public Eternal::Application {
             ~Game() {
             }
 
+            Eternal::Mesh myMesh;
+
             Eternal::Sprite mySprite;
 
             uint32_t ColorBuffer[640 * 480 * 3];
@@ -387,6 +390,12 @@ class Game : public Eternal::Application {
                 pos.h = 128;
                 myFont.Load("data/hello");
                 spr.Load("data/smile32.bmp");
+
+                myMesh.Vert2(0,0); myMesh.Color4(0,0,255,255); myMesh.TexCoord2(0,0);
+                myMesh.Vert2(1,0); myMesh.Color4(255,0,255,255); myMesh.TexCoord2(1,0);
+                myMesh.Vert2(1,1); myMesh.Color4(0,255,255,255); myMesh.TexCoord2(0,1);
+
+
             }
 
             void OnUpdate() override {
@@ -394,7 +403,7 @@ class Game : public Eternal::Application {
                     exit(0);
                 }
                 pos.x += 1.0f;
-                //diag.OnUpdate(myInputHandle);
+                diag.OnUpdate(myInputHandle);
                 myMenu.OnUpdate(myInputHandle);
             }
 
@@ -404,7 +413,6 @@ class Game : public Eternal::Application {
                 Eternal::Rect c(0,0,128,128);
 
                 spr.Draw(r,c);
-                printf("???");
 
 
                 Eternal::Quad q;
@@ -412,12 +420,14 @@ class Game : public Eternal::Application {
                 q.FromRect(r);
                 myRenderer->SetColor(0,255,0,255);
                 myRenderer->DrawQuad(q);
+                diag.OnDraw(myRenderer);
+                
 
 //                myMenu.OnDraw(myRenderer);
             }
         private:
             GLuint id;
-           // Diag diag;
+            Diag diag;
            Menu myMenu;
             Eternal::Rect pos;
             float fScale = 1;

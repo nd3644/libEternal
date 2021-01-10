@@ -11,11 +11,11 @@ Eternal::DbgLog *Eternal::DbgLog::GetInstance() {
 }
 
 Eternal::DbgLog::DbgLog() {
-    myFile.open("dbg.txt");
+ //   myFile.open("dbg.txt");
 }
 
 Eternal::DbgLog::~DbgLog() {
-    myFile.close();
+//    myFile.close();
 }
 
 void Eternal::DbgLog::operator<<(std::string str) {
@@ -23,7 +23,8 @@ void Eternal::DbgLog::operator<<(std::string str) {
 }
 
 void Eternal::DbgLog::Write(std::string str) {
-    myFile << str;
-    myFile.flush();
+//    myFile << str;
+//    myFile.flush();
     std::cout << str << std::endl;
+    std::cout.flush();
 }

@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 
 namespace Eternal {
+    class Mesh;
     class Sprite {
         public:
             Sprite();
@@ -14,10 +15,13 @@ namespace Eternal {
             void Load(std::string sfilename);
             void FromData(uint8_t *pixels, int width, int height, int bpp);
             
+            void Bind();
             void Draw(Rect &pos, Rect &clip);
 
             void Draw_NoBind(Rect &pos, Rect &clip);
             void ForceResize(int width, int height);
+
+            void AmendToMesh(Rect &pos, Rect &clip, Eternal::Mesh &mesh);
 
             int GetWidth() const { return w; }
             int GetHeight() const { return h; }
@@ -39,7 +43,6 @@ namespace Eternal {
             Vec2 vVertexBuffer[6];
             Vec2 vTexCoords[6];
             RGBA ColorBuffer[6];
-            float ftexcoords[6 * 2];
 
             std::string sName;
     };

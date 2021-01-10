@@ -69,10 +69,9 @@ bool Eternal::VideoSystem::Clear() {
         }
         else if(mySDLEvent.type == SDL_WINDOWEVENT) {
             if(mySDLEvent.window.event == SDL_WINDOWEVENT_RESIZED) {
-
                 int newWidth = mySDLEvent.window.data1;
                 int newHeight = mySDLEvent.window.data2;
-                         
+                        
                 glViewport(0, 0, newWidth, newHeight);
                 iCurrentWindowWidth = newWidth;
                 iCurrentWindowHeight = newHeight;
@@ -81,6 +80,16 @@ bool Eternal::VideoSystem::Clear() {
     }
 
     return true;
+}
+
+void Eternal::VideoSystem::Resize(int w, int h) {
+    SDL_SetWindowSize(myWindow, w, h);
+    int newWidth = w;
+    int newHeight = h;
+
+    glViewport(0, 0, newWidth, newHeight);
+    iCurrentWindowWidth = newWidth;
+    iCurrentWindowHeight = newHeight;
 }
 
 void Eternal::VideoSystem::SetMaxFPS(int i) {
@@ -98,9 +107,9 @@ void Eternal::VideoSystem::SwapBuffers() {
     glClear(GL_COLOR_BUFFER_BIT);
     glViewport(0,0,iCurrentWindowWidth,iCurrentWindowHeight);
     glBindTexture(GL_TEXTURE_2D, myFBO.myTextureID);
-    mySprite.ForceResize(iCurrentWindowWidth, iCurrentWindowHeight);
-    Eternal::Rect r(0, 0, iCurrentWindowWidth, iCurrentWindowHeight);
-    Eternal::Rect c(0,0, iCurrentWindowWidth, iCurrentWindowHeight);
+    mySprite.ForceResize(WIN_W, WIN_H);
+    Eternal::Rect r(0, 0, WIN_W, WIN_H);
+    Eternal::Rect c(0,0, WIN_W, WIN_H);
     mySprite.Flip(false,true);
     mySprite.Draw_NoBind(r,c);
 

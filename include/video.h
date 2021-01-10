@@ -28,6 +28,7 @@ namespace Eternal {
 
 			int GetCurrentWidth() const;
 			int GetCurrentHeight() const;
+			void Resize(int w, int h);
 		private:
 			SDL_Renderer *myRenderer;
 			SDL_Window *myWindow;

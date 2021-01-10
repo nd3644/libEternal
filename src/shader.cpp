@@ -2,6 +2,46 @@
 #include <iostream>
 #include <fstream>
 
+constexpr char fs[] =
+"#version 430 core\n"
+
+"in vec2 texCoord0;\n"
+"in vec4 color0;\n"
+
+"uniform sampler2D tex1;\n"
+
+"out vec4 diffuseColor;\n"
+"void main()\n"
+"{\n"
+"	if(textureSize(tex1, 0).x > 1) {\n"
+"		diffuseColor = texture2D(tex1, texCoord0) * color0;\n"
+"	}\n"
+"	else {\n"
+"		diffuseColor = color0;\n"
+"	}\n"
+"}";
+
+constexpr char vs[] = 
+"#version 430 core\n"
+
+"layout(location = 0) in vec2 InPos;\n"
+"layout(location = 1) in vec2 InTexCoord;\n"
+"layout(location = 2) in vec4 InColor;\n"
+
+"out vec2 texCoord0;\n"
+"out vec4 color0;\n"
+
+"void main()\n"
+"{\n"
+"	gl_Position = vec4(vec3(InPos.x - 1.0, 1.0 - InPos.y, 0), 1.0);\n"
+"	texCoord0 = InTexCoord;\n"
+"	color0 = InColor;\n"
+"}";
+
+
+Eternal::Shader::Shader() {
+}
+
 Eternal::Shader::~Shader() {
     if(!bLoaded) {
         return;
@@ -17,6 +57,7 @@ Eternal::Shader::~Shader() {
 
 void Eternal::Shader::Initialize() {
 
+    std::cout << "---test---2" << std::endl;
     std::ifstream infile;
     std::string sline;
     std::string sVertex, sFragment;
@@ -24,21 +65,23 @@ void Eternal::Shader::Initialize() {
 
     // Load shaders from file
     infile.open("shaders/basic_shader.vs");
-    if(infile.fail())
+    if(infile.fail() || infile.is_open() == false)
         std::cout << "couldn't open VS file" << std::endl;
 
-    while(!infile.eof()) {
+    std::cout << "entering loop" << std::endl;
+/*    while(!infile.eof()) {
         std::getline(infile, sline);
         sVertex += sline + "\n";
-    }
+    }*/
+    std::cout << "exited loop" << std::endl;
     infile.close();
     std::cout << std::endl;
 
     infile.open("shaders/basic_shader.fs");
-    while(!infile.eof()) {
+/*    while(!infile.eof()) {
         std::getline(infile, sline);
         sFragment += sline + "\n";
-    }
+    }*/
     infile.close();
 
     /* Generate shaders */
@@ -56,6 +99,7 @@ void Eternal::Shader::Initialize() {
     const GLchar *p[1];
 	GLint lengths[1];
 
+    sVertex = vs;
 	p[0] = sVertex.c_str();
 	lengths[0] = sVertex.length();
 
@@ -70,6 +114,7 @@ void Eternal::Shader::Initialize() {
 	const GLchar *ap[1];
 	GLint alengths[1];
 
+    sFragment = fs;
 	ap[0] = sFragment.c_str();
 	alengths[0] = sFragment.length();
 

@@ -15,12 +15,15 @@ namespace Eternal {
             void Pause();
             void Stop();
 
+            bool IsPlaying();
+
             void SetVolume(int i);
         private:
             void Cleanup();
 
         private:
             Mix_Chunk *myChunk;
+            int iChosenChannel;
     };
 }
 

@@ -9,6 +9,7 @@ namespace Eternal {
         public:
 
             ~Shader();
+            Shader();
             enum Type {
                 SHADER_VERTEX = 0,
                 SHADER_FRAGMENT

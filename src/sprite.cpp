@@ -1,8 +1,10 @@
 #include "sprite.h"
 #include "renderer.h"
+#include "mesh.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include "dbglog.h"
 
 Eternal::Sprite::Sprite() {
     w = h = 0;
@@ -85,8 +87,11 @@ void Eternal::Sprite::Load(std::string sfile) {
 
     SDL_Surface *surf = IMG_Load(sfile.c_str());
     if(surf == nullptr) {
-        std::cout << "Couldn't load " << sfile << std::endl;
+        std::cout << "*ERROR: Couldn't load " << sfile << std::endl;
         return;
+    }
+    else {
+        DbgLog::GetInstance()->Write("*Successfully Loaded: "  + sfile);
     }
 
     glEnable(GL_TEXTURE_2D);
@@ -101,7 +106,11 @@ void Eternal::Sprite::Load(std::string sfile) {
     h = surf->h;
 
 //    SDL_FreeSurface(surf);
+}
 
+void Eternal::Sprite::Bind() {
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, myTexID);
 }
 
 void Eternal::Sprite::ForceResize(int width, int height ){
@@ -172,4 +181,47 @@ void Eternal::Sprite::SetColor(float r, float g, float b, float a) {
         ColorBuffer[i].b = b / 255.0f;
         ColorBuffer[i].a = a / 255.0f;
     }
+}
+
+void Eternal::Sprite::AmendToMesh(Rect &pos, Rect &clip, Mesh &mesh) {
+    vVertexBuffer[0].x = pos.x;             vVertexBuffer[0].y = pos.y;
+    vVertexBuffer[1].x = pos.x + pos.w;     vVertexBuffer[1].y = pos.y;
+    vVertexBuffer[2].x = pos.x;             vVertexBuffer[2].y = pos.y + pos.h;
+
+    vVertexBuffer[3].x = pos.x + pos.w;     vVertexBuffer[3].y = pos.y;
+    vVertexBuffer[4].x = pos.x + pos.w;     vVertexBuffer[4].y = pos.y + pos.h;
+    vVertexBuffer[5].x = pos.x;             vVertexBuffer[5].y = pos.y + pos.h;
+
+
+    const float cx = clip.x / w;
+    const float cy = clip.y / h;
+
+    const float cw = (clip.x / w) + clip.w / w;
+    const float ch = (clip.y / h) + clip.h / h;
+
+    vTexCoords[0].x = cx;        vTexCoords[0].y = cy;
+    vTexCoords[1].x = cw;        vTexCoords[1].y = cy;
+    vTexCoords[2].x = cx;        vTexCoords[2].y = ch;
+
+    vTexCoords[3].x = cw;        vTexCoords[3].y = cy;
+    vTexCoords[4].x = cw;        vTexCoords[4].y = ch;
+    vTexCoords[5].x = cx;        vTexCoords[5].y = ch;
+    for(int i = 0;i < 6;i++) {
+        vVertexBuffer[i].x /= (WIN_W / 2);
+        vVertexBuffer[i].y /= (WIN_H / 2);
+
+        if(bFlipV) {
+            vTexCoords[i].y = 1.0f - vTexCoords[i].y;
+        }
+        if(bFlipU) {
+            vTexCoords[i].x = 1.0f - vTexCoords[i].x;
+        }
+    }
+
+    for(int i = 0;i < 6;i++) {
+        mesh.Vert2(vVertexBuffer[i].x, vVertexBuffer[i].y);
+        mesh.TexCoord2(vTexCoords[i].x, vTexCoords[i].y);
+        mesh.Color4(1,1,1,1);
+    }
+
 }
