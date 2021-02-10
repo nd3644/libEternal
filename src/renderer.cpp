@@ -67,7 +67,7 @@ void Eternal::Renderer::DrawQuad(Eternal::Quad &quad) {
 	glBufferData(GL_ARRAY_BUFFER, (6*2) * sizeof(float), &vVertexBuffer[0], GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, arrayBuffers[2]);
-	glBufferData(GL_ARRAY_BUFFER, (6*4) * sizeof(float), &ColorBuffer, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (6*4) * sizeof(float), &ColorBuffer[0], GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(vertArrObj);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -395,7 +395,7 @@ class Game : public Eternal::Application {
                 myMesh.Vert2(1,0); myMesh.Color4(255,0,255,255); myMesh.TexCoord2(1,0);
                 myMesh.Vert2(1,1); myMesh.Color4(0,255,255,255); myMesh.TexCoord2(0,1);
 
-
+                myVideoSystem->SetMaxFPS(60);
             }
 
             void OnUpdate() override {
@@ -419,9 +419,33 @@ class Game : public Eternal::Application {
                 r = { 200, 200, 64,64 };
                 q.FromRect(r);
                 myRenderer->SetColor(0,255,0,255);
+    //            myRenderer->DrawQuad(q);
+//                diag.OnDraw(myRenderer);
+
+
+                static bool up = true;
+                static float f = 0;
+                if(up) {
+                    f += 1;
+                    if(f >= 254) {
+                        up = false;
+                    }
+                }
+                else {
+                    f -= 1;
+                    if(f <= 1) {
+                        up = true;
+                    }
+                }
+                r = { 0, 0, 300, 300 };
+                q.FromRect(r);
+                myRenderer->SetColor(1,1,1,0.8f);
                 myRenderer->DrawQuad(q);
-                diag.OnDraw(myRenderer);
                 
+
+                if(myInputHandle->IsKeyTap(((Eternal::InputHandle::Key)SDL_SCANCODE_9))) {
+                    myVideoSystem->ExportFrame("test.bmp");
+                }
 
 //                myMenu.OnDraw(myRenderer);
             }

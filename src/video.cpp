@@ -6,6 +6,9 @@
 
 #include "dbglog.h"
 
+
+#include <cstring>
+
 Eternal::VideoSystem::VideoSystem() {
     iElapsedFrames = iFPSTimer = iAverageFPS = 0;
     iMaxFPS = 0;
@@ -46,7 +49,8 @@ void Eternal::VideoSystem::Initialize(int x, int y, int w, int h) {
 //    glEnable(GL_LINE_SMOOTH);
 
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
     (*DbgLog::GetInstance()) << "Init happened\n;";
 
@@ -101,6 +105,7 @@ int Eternal::VideoSystem::GetMaxFPS() const {
 }
 
 void Eternal::VideoSystem::SwapBuffers() {
+    ExportFrame("test2.bmp");
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     myShader.Bind();
     glClearColor(0,1,0,1);
@@ -161,4 +166,20 @@ int Eternal::VideoSystem::GetCurrentWidth() const {
 
 int Eternal::VideoSystem::GetCurrentHeight() const {
     return iCurrentWindowHeight;
+}
+
+void Eternal::VideoSystem::ExportFrame(std::string sfilename) {
+    GLubyte *pixels = new GLubyte[(WIN_W * WIN_H) * 3];
+
+    for(int y = 0;y < WIN_H;y++) {
+        for(int x = 0;x < WIN_W;x++) {
+            std::swap(pixels[((y * WIN_W) + x)], pixels[(((WIN_H-1) - (y * WIN_W)) + x)]);
+        }
+    }
+    glReadPixels(0,0,WIN_W,WIN_H,GL_RGB, GL_UNSIGNED_BYTE, pixels);    
+    SDL_Surface *mySurf = SDL_CreateRGBSurface(0,WIN_W,WIN_H,24,0x00FF0000,0x0000FF00,0x000000FF,0);
+
+    mySurf->pixels = pixels;
+
+    SDL_SaveBMP(mySurf, sfilename.c_str());
 }

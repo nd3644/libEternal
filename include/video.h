@@ -29,6 +29,8 @@ namespace Eternal {
 			int GetCurrentWidth() const;
 			int GetCurrentHeight() const;
 			void Resize(int w, int h);
+
+			void ExportFrame(std::string sfilename);
 		private:
 			SDL_Renderer *myRenderer;
 			SDL_Window *myWindow;

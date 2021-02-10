@@ -139,6 +139,14 @@ namespace Eternal {
         float x, y;
         float w, h;
 
+        float cx() {
+            return x + (w / 2.0f);
+        }
+
+        float cy() {
+            return y + (h / 2.0f);
+        }
+
         bool IsColliding(Rect &b) {
             if (x > b.x + b.w
                 || x + w < b.x
